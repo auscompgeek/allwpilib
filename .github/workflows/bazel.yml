@@ -23,6 +23,7 @@ jobs:
               classifier: "linuxsystemcoredebug",
               os: ubuntu-24.04,
               action: "build",
+              compilation_mode: "dbg",
             }
           - {
               name: "Linux System Core Static",
@@ -35,6 +36,7 @@ jobs:
               classifier: "linuxsystemcorestaticdebug",
               os: ubuntu-24.04,
               action: "build",
+              compilation_mode: "dbg",
             }
           - {
               name: "Linux x86-64",
@@ -47,6 +49,7 @@ jobs:
               classifier: "linuxx86-64debug",
               os: ubuntu-24.04,
               action: "test",
+              compilation_mode: "dbg",
             }
           - {
               name: "Linux x86-64 Static",
@@ -59,6 +62,7 @@ jobs:
               classifier: "linuxx86-64staticdebug",
               os: ubuntu-24.04,
               action: "test",
+              compilation_mode: "dbg",
             }
 
           - {
@@ -70,41 +74,44 @@ jobs:
 
           - {
               name: "Windows x86-64",
-              classifier: "windowsx86-64,windowsx86-64debug,headers,sources",
+              classifier: "windowsx86-64,windowsx86-64static,headers,sources",
               os: windows-2022,
               action: "test",
             }
           - {
-              name: "Windows x86-64 Static",
-              classifier: "windowsx86-64static,windowsx86-64staticdebug",
+              name: "Windows x86-64 Debug",
+              classifier: "windowsx86-64debug,windowsx86-64staticdebug",
               os: windows-2022,
               action: "test",
+              compilation_mode: "dbg",
             }
 
           - {
               name: "Windows ARM64",
-              classifier: "windowsarm64,windowsarm64debug",
+              classifier: "windowsarm64,windowsarm64static",
               os: windows-2022,
               action: "build",
             }
           - {
-              name: "Windows ARM64 Static",
-              classifier: "windowsarm64static,windowsarm64staticdebug",
+              name: "Windows ARM64 Debug",
+              classifier: "windowsarm64debug,windowsarm64staticdebug",
               os: windows-2022,
               action: "build",
+              compilation_mode: "dbg",
             }
 
           - {
-              name: "Windows System Core",
-              classifier: "linuxsystemcore,linuxsystemcoredebug",
+              name: "Windows Systemcore",
+              classifier: "linuxsystemcore,linuxsystemcorestatic",
               os: windows-2022,
               action: "build",
             }
           - {
-              name: "Windows System Core Static",
-              classifier: "linuxsystemcorestatic,linuxsystemcorestaticdebug",
+              name: "Windows Systemcore Debug",
+              classifier: "linuxsystemcoredebug,linuxsystemcorestaticdebug",
               os: windows-2022,
               action: "build",
+              compilation_mode: "dbg",
             }
 
     name: "${{ matrix.action == 'test' && 'Test' || 'Build' }} ${{ matrix.name }}"
@@ -145,15 +152,16 @@ jobs:
       - name: bazel ${{ matrix.action }}
         run: |
           ACTION='${{ matrix.action }}'
+          COMPILATION_MODE=${{ matrix.compilation_mode || 'opt' }}
           if [[ "${ACTION}" == "build" ]]; then
             TARGETS=:publish
           else
             TARGETS=...
           fi
           if [[ "${{ matrix.os }}" == "windows-2022" ]]; then
-            bazel --output_user_root=C:\\bazelroot ${ACTION} ${TARGETS} --config=ci -c opt --repo_env=WPI_PUBLISH_CLASSIFIER_FILTER='${{ matrix.classifier }}'
+            bazel --output_user_root=C:\\bazelroot ${ACTION} ${TARGETS} --config=ci -c ${COMPILATION_MODE} --repo_env=WPI_PUBLISH_CLASSIFIER_FILTER='${{ matrix.classifier }}'
           else
-            bazel ${ACTION} ${TARGETS} --config=ci -c opt --repo_env=WPI_PUBLISH_CLASSIFIER_FILTER='${{ matrix.classifier }}'
+            bazel ${ACTION} ${TARGETS} --config=ci -c ${COMPILATION_MODE} --repo_env=WPI_PUBLISH_CLASSIFIER_FILTER='${{ matrix.classifier }}'
           fi
         shell: bash
 
