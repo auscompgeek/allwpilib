@@ -73,6 +73,13 @@ http_archive(
 
 # Download toolchains
 http_archive(
+    name = "gcc_toolchain",
+    sha256 = "34ce4f5371e52428e35762a770c53dbd50bb00daccb8a1a24b2e178f9ab42551",
+    strip_prefix = "gcc-toolchain-0.9.1",
+    url = "https://github.com/f0rmiga/gcc-toolchain/releases/download/0.9.1/gcc-toolchain-0.9.1.tar.gz",
+)
+
+http_archive(
     name = "rules_bzlmodrio_toolchains",
     sha256 = "102b4507628e9724b0c1e441727762c344e40170f65ac60516168178ea33a89a",
     url = "https://github.com/wpilibsuite/rules_bzlmodrio_toolchains/releases/download/2025-1.bcr6/rules_bzlmodrio_toolchains-2025-1.bcr6.tar.gz",
@@ -131,6 +138,65 @@ bazel_features_deps()
 load("@build_bazel_apple_support//lib:repositories.bzl", "apple_support_dependencies")
 
 apple_support_dependencies()
+
+load("@gcc_toolchain//toolchain:repositories.bzl", "gcc_toolchain_dependencies")
+
+gcc_toolchain_dependencies()
+
+load("@gcc_toolchain//toolchain:defs.bzl", "ARCHS", "gcc_register_toolchain")
+
+GCC_EXTRA_COMPILE_FLAGS = [
+    "-Wextra",
+    "-Werror",
+    "-gz=zlib",
+    "-Wformat=2",
+    "-pedantic",
+    "-Wno-psabi",
+    "-Wno-unused-parameter",
+    "-fPIC",
+    "-pthread",
+]
+
+GCC_EXTRA_C_FLAGS = GCC_EXTRA_COMPILE_FLAGS + ["-Wno-error=attributes"]
+
+GCC_EXTRA_CXX_FLAGS = GCC_EXTRA_COMPILE_FLAGS + [
+    "-std=c++20",
+    "-Wno-deprecated-enum-enum-conversion",
+]
+
+GCC_EXTRA_LINK_FLAGS = [
+    "-rdynamic",
+    "-latomic",
+    "-Wl,-rpath,$ORIGIN",
+    "-lstdc++",
+]
+
+gcc_register_toolchain(
+    name = "gcc_toolchain_x86_64",
+    gcc_version = "13.4.0",
+    target_arch = ARCHS.x86_64,
+    extra_cflags = GCC_EXTRA_C_FLAGS,
+    extra_cxxflags = GCC_EXTRA_CXX_FLAGS,
+    extra_ldflags = GCC_EXTRA_LINK_FLAGS,
+)
+
+gcc_register_toolchain(
+    name = "gcc_toolchain_aarch64",
+    gcc_version = "13.4.0",
+    target_arch = ARCHS.aarch64,
+    extra_cflags = GCC_EXTRA_C_FLAGS,
+    extra_cxxflags = GCC_EXTRA_CXX_FLAGS,
+    extra_ldflags = GCC_EXTRA_LINK_FLAGS,
+)
+
+gcc_register_toolchain(
+    name = "gcc_toolchain_armv7",
+    gcc_version = "13.4.0",
+    target_arch = ARCHS.armv7,
+    extra_cflags = GCC_EXTRA_C_FLAGS,
+    extra_cxxflags = GCC_EXTRA_CXX_FLAGS,
+    extra_ldflags = GCC_EXTRA_LINK_FLAGS,
+)
 
 load("@rules_cc//cc:repositories.bzl", "rules_cc_toolchains")
 
