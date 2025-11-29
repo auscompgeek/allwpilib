@@ -188,27 +188,34 @@ http_archive(
 )
 
 load("@bazel_features//:deps.bzl", "bazel_features_deps")
+
 bazel_features_deps()
 
 load("@build_bazel_apple_support//lib:repositories.bzl", "apple_support_dependencies")
+
 apple_support_dependencies()
 
 load("@rules_cc//cc:repositories.bzl", "rules_cc_toolchains")
+
 rules_cc_toolchains()
 
 load("@rules_java//java:rules_java_deps.bzl", "rules_java_dependencies")
+
 rules_java_dependencies()
 
 # note that the following line is what is minimally required from protobuf for the java rules
 # consider using the protobuf_deps() public API from @com_google_protobuf//:protobuf_deps.bzl
 load("@com_google_protobuf//bazel/private:proto_bazel_features.bzl", "proto_bazel_features")  # buildifier: disable=bzl-visibility
+
 proto_bazel_features(name = "proto_bazel_features")
 
 # register toolchains
 load("@rules_java//java:repositories.bzl", "rules_java_toolchains")
+
 rules_java_toolchains()
 
 load("@rules_python//python:repositories.bzl", "py_repositories", "python_register_toolchains")
+
 py_repositories()
 
 python_register_toolchains(
@@ -218,6 +225,7 @@ python_register_toolchains(
 )
 
 load("@rules_python//python:pip.bzl", "pip_parse")
+
 pip_parse(
     name = "allwpilib_pip_deps",
     python_interpreter_target = "@python_3_10_host//:python",
@@ -226,12 +234,15 @@ pip_parse(
 )
 
 load("@allwpilib_pip_deps//:requirements.bzl", "install_deps")
+
 install_deps()
 
 load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
+
 rules_jvm_external_deps()
 
 load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
+
 rules_jvm_external_setup()
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
@@ -318,19 +329,25 @@ maven_install(
 )
 
 load("@maven//:defs.bzl", "pinned_maven_install")
+
 pinned_maven_install()
 
 load("@aspect_bazel_lib//lib:repositories.bzl", "aspect_bazel_lib_dependencies", "aspect_bazel_lib_register_toolchains")
+
 aspect_bazel_lib_dependencies()
+
 aspect_bazel_lib_register_toolchains()
 
 load("@rules_bzlmodrio_toolchains//:maven_deps.bzl", "setup_legacy_setup_toolchains_dependencies")
+
 setup_legacy_setup_toolchains_dependencies()
 
 load("@rules_bzlmodrio_toolchains//toolchains:load_toolchains.bzl", "load_toolchains")
+
 load_toolchains()
 
 load("@rules_bzlmodrio_jdk//:maven_deps.bzl", "setup_legacy_setup_jdk_dependencies")
+
 setup_legacy_setup_jdk_dependencies()
 
 register_toolchains(
@@ -352,35 +369,45 @@ register_toolchains(
 )
 
 load("@bzlmodrio-ni//:maven_cpp_deps.bzl", "setup_legacy_bzlmodrio_ni_cpp_dependencies")
+
 setup_legacy_bzlmodrio_ni_cpp_dependencies()
 
 load("@bzlmodrio-opencv//:maven_cpp_deps.bzl", "setup_legacy_bzlmodrio_opencv_cpp_dependencies")
+
 setup_legacy_bzlmodrio_opencv_cpp_dependencies()
 
 load("@bzlmodrio-libssh//:maven_cpp_deps.bzl", "setup_legacy_bzlmodrio_libssh_cpp_dependencies")
+
 setup_legacy_bzlmodrio_libssh_cpp_dependencies()
 
 load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies")
+
 rules_proto_dependencies()
 
 load("@rules_proto//proto:setup.bzl", "rules_proto_setup")
+
 rules_proto_setup()
 
 load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
+
 rules_pkg_dependencies()
 
 load("@rules_python_pytest//python_pytest:repositories.bzl", "rules_python_pytest_dependencies")
+
 rules_python_pytest_dependencies()
 
 load("//shared/bazel/rules:publishing_rule.bzl", "publishing_repo")
+
 publishing_repo(
     name = "com_wpilib_allwpilib_publishing_config",
 )
 
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+
 bazel_skylib_workspace()
 
 load("@rules_doxygen//:extensions.bzl", "doxygen_repository")
+
 doxygen_repository(
     name = "doxygen",
     executables = [
