@@ -20,6 +20,7 @@ jobs:
             classifier: "linuxsystemcoredebug"
             os: ubuntu-24.04
             action: "build"
+            compilation_mode: "dbg"
           - name: "Linux System Core Static"
             classifier: "linuxsystemcorestatic"
             os: ubuntu-24.04
@@ -28,6 +29,7 @@ jobs:
             classifier: "linuxsystemcorestaticdebug"
             os: ubuntu-24.04
             action: "build"
+            compilation_mode: "dbg"
           - name: "Linux x86-64"
             classifier: "linuxx86-64,headers,sources"
             os: ubuntu-24.04
@@ -36,6 +38,7 @@ jobs:
             classifier: "linuxx86-64debug"
             os: ubuntu-24.04
             action: "test"
+            compilation_mode: "dbg"
           - name: "Linux x86-64 Static"
             classifier: "linuxx86-64static"
             os: ubuntu-24.04
@@ -44,6 +47,7 @@ jobs:
             classifier: "linuxx86-64staticdebug"
             os: ubuntu-24.04
             action: "test"
+            compilation_mode: "dbg"
 
           - name: "macOS"
             classifier: "osxuniversal,osxuniversaldebug,headers,sources,osxuniversalstatic,osxuniversalstaticdebug,linuxsystemcore,linuxsystemcoredebug,linuxsystemcorestatic,linuxsystemcorestaticdebug"
@@ -58,6 +62,7 @@ jobs:
             classifier: "windowsx86-64debug,windowsx86-64staticdebug"
             os: windows-2022
             action: "test"
+            compilation_mode: "dbg"
 
           - name: "Windows ARM64"
             classifier: "windowsarm64,windowsarm64static"
@@ -67,6 +72,7 @@ jobs:
             classifier: "windowsarm64debug,windowsarm64staticdebug"
             os: windows-2022
             action: "build"
+            compilation_mode: "dbg"
 
           - name: "Windows System Core"
             classifier: "linuxsystemcore,linuxsystemcorestatic"
@@ -76,6 +82,7 @@ jobs:
             classifier: "linuxsystemcoredebug,linuxsystemcorestaticdebug"
             os: windows-2022
             action: "build"
+            compilation_mode: "dbg"
 
     name: "${{ matrix.action == 'test' && 'Test' || 'Build' }} ${{ matrix.name }}"
     runs-on: ${{ matrix.os }}
@@ -130,15 +137,16 @@ jobs:
       - name: bazel ${{ matrix.action }}
         run: |
           ACTION='${{ matrix.action }}'
+          COMPILATION_MODE=${{ matrix.compilation_mode || 'opt' }}
           if [[ "${ACTION}" == "build" ]]; then
             TARGETS=:publish
           else
             TARGETS=...
           fi
           if [[ "${{ matrix.os }}" == "windows-2022" ]]; then
-            bazel --output_user_root=C:\\bazelroot ${ACTION} ${TARGETS} --config=ci -c opt --repo_env=WPI_PUBLISH_CLASSIFIER_FILTER='${{ matrix.classifier }}'
+            bazel --output_user_root=C:\\bazelroot ${ACTION} ${TARGETS} --config=ci -c ${COMPILATION_MODE} --repo_env=WPI_PUBLISH_CLASSIFIER_FILTER='${{ matrix.classifier }}'
           else
-            bazel ${ACTION} ${TARGETS} --config=ci -c opt --repo_env=WPI_PUBLISH_CLASSIFIER_FILTER='${{ matrix.classifier }}'
+            bazel ${ACTION} ${TARGETS} --config=ci -c ${COMPILATION_MODE} --repo_env=WPI_PUBLISH_CLASSIFIER_FILTER='${{ matrix.classifier }}'
           fi
         shell: bash
 
