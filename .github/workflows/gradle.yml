@@ -86,36 +86,30 @@ jobs:
         include:
           - os: windows-2025
             artifact-name: Win64Debug
-            architecture: x64
             task: "build"
             build-options: "-PciDebugOnly"
             outputs: "build/allOutputs"
           - os: windows-2025
             artifact-name: Win64Release
-            architecture: x64
             build-options: "-PciReleaseOnly"
             task: "copyAllOutputs"
             outputs: "build/allOutputs"
-          - os: windows-2025
+          - os: windows-11-arm
             artifact-name: WinArm64Debug
-            architecture: x64
             task: "build"
             build-options: "-PciDebugOnly -Pbuildwinarm64 -Ponlywindowsarm64"
             outputs: "build/allOutputs"
-          - os: windows-2025
+          - os: windows-11-arm
             artifact-name: WinArm64Release
-            architecture: x64
             build-options: "-PciReleaseOnly -Pbuildwinarm64 -Ponlywindowsarm64"
             task: "copyAllOutputs"
             outputs: "build/allOutputs"
           - os: macOS-15
             artifact-name: macOS
-            architecture: aarch64
             task: "build"
             outputs: "build/allOutputs"
           - os: windows-2025
             artifact-name: Win64FFI
-            architecture: x64
             task: ":ntcoreffi:build"
             build-options: "-Pntcoreffibuild -Pbuildwinarm64"
             outputs: "ntcoreffi/build/outputs"
@@ -146,7 +140,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 25
-          architecture: ${{ matrix.architecture }}
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
         with:
