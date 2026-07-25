@@ -95,11 +95,13 @@ jobs:
             task: "copyAllOutputs"
             outputs: "build/allOutputs"
           - os: windows-11-arm
+            java-distribution: microsoft
             artifact-name: WinArm64Debug
             task: "build"
             build-options: "-PciDebugOnly -Pbuildwinarm64 -Ponlywindowsarm64"
             outputs: "build/allOutputs"
           - os: windows-11-arm
+            java-distribution: microsoft
             artifact-name: WinArm64Release
             build-options: "-PciReleaseOnly -Pbuildwinarm64 -Ponlywindowsarm64"
             task: "copyAllOutputs"
@@ -138,7 +140,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: ${{ matrix.java-distribution || 'temurin' }}
           java-version: 25
 
       - name: Setup Gradle
