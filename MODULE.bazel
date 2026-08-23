@@ -55,7 +55,7 @@ pip.parse(
 )
 use_repo(pip, "allwpilib_pip_deps")
 
-bazel_dep(name = "rules_jvm_external", version = "6.8")
+bazel_dep(name = "rules_jvm_external", version = "7.1")
 
 register_toolchains("//:java_toolchain_definition")
 
@@ -141,7 +141,7 @@ archive_override(
     urls = ["https://github.com/wpilibsuite/bzlmodRio-opencv/releases/download/2027.4.13.0-3.bcr1/bzlmodRio-opencv-2027.4.13.0-3.bcr1.tar.gz"],
 )
 
-bazel_dep(name = "protobuf", version = "32.1", repo_name = "com_google_protobuf")
+bazel_dep(name = "protobuf", version = "34.0.bcr.1", repo_name = "com_google_protobuf")
 
 http_jar = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
 
