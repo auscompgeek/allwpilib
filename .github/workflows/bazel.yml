@@ -54,8 +54,8 @@ jobs:
             os: windows-2025
             container: ""
             action: "test"
-          - name: "Windows x86-64"
-            compilation_mode: dbg
+          - name: "Windows x86-64 Debug"
+            compilation_mode: fastbuild
             classifier: "windowsx86-64debug,windowsx86-64staticdebug"
             os: windows-2025
             container: ""
