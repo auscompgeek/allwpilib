@@ -45,6 +45,11 @@ if defined BAZEL_OVERRIDE (
     set "BAZEL_TARGET=%BAZEL_REAL%"
 )
 
+:: 2.0. Use the native installed git as bash, if installed globally.
+set "GIT_CACHE_DIR=%ProgramFiles%\Git"
+set "GIT_EXE_PATH=%GIT_CACHE_DIR%\cmd\git.exe"
+if exist "%GIT_EXE_PATH%" goto git_ready
+
 :: 2. The pinned hermetic git.
 set "GIT_RELEASE_TAG=v2.55.0.windows.5"
 set "GIT_ARCHIVE_NAME=PortableGit-2.55.0.5-64-bit.7z.exe"
