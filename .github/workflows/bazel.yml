@@ -63,15 +63,15 @@ jobs:
           - name: "Windows ARM64"
             compilation_mode: opt
             classifier: "windowsarm64,windowsarm64static"
-            os: windows-2025
+            os: windows-11-arm
             container: ""
-            action: "build"
+            action: "test"
           - name: "Windows ARM64"
             compilation_mode: dbg
             classifier: "windowsarm64debug,windowsarm64staticdebug"
-            os: windows-2025
+            os: windows-11-arm
             container: ""
-            action: "build"
+            action: "test"
           - name: "Windows Systemcore"
             compilation_mode: opt
             classifier: "linuxsystemcore,linuxsystemcorestatic"
