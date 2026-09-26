@@ -27,10 +27,6 @@ runs:
           echo "WPI bazel-remote credentials detected; configuring R/W access"
           echo "build:remote_cache --remote_cache=grpcs://${CACHE_USER}:${CACHE_PASS}@${REMOTE_URL}" > bazel_auth.rc
           echo "build:ci --config=remote_cache" >> bazel_auth.rc
-        elif [ -n "${BB_TOKEN}" ]; then
-          echo "BuildBuddy token detected; configuring BuildBuddy cache"
-          echo "build:build_buddy --remote_header=x-buildbuddy-api-key=${BB_TOKEN}" > bazel_auth.rc
-          echo "build:ci --config=build_buddy" >> bazel_auth.rc
         else
           echo "No cache credentials detected; falling back to readonly WPI cache"
           echo "build:ci --config=remote_cache" > bazel_auth.rc
