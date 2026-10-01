@@ -7,7 +7,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  SCCACHE_WEBDAV_ENDPOINT: "https://frcmaven.wpi.edu/artifactory/wpilib-generic-cache-cmake-local"
+  #SCCACHE_WEBDAV_ENDPOINT: "https://frcmaven.wpi.edu/artifactory/wpilib-generic-cache-cmake-local"
   SCCACHE_WEBDAV_KEY_PREFIX: "sccache"
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
             name: Linux
             container: wpilib/systemcore-cross-debian:trixie
             flags: "--preset with-sccache -DCMAKE_BUILD_TYPE=Release -DWPILIB_WITH_EXAMPLES=ON"
-          - os: ubuntu-24.04-arm
+          - os: ${{ vars.RUNS_ON_CMAKE_LINUX_ARM || 'ubuntu-24.04-arm' }}
             name: Linux ARM
             container: wpilib/debian-base:arm64-trixie
             flags: "--preset with-sccache -DCMAKE_BUILD_TYPE=Release -DWPILIB_WITH_EXAMPLES=ON"
