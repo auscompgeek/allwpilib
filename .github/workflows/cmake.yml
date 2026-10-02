@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ${{ case(github.repository_owner == 'wpilibsuite', 'blacksmith-4vcpu-ubuntu-2404', 'ubuntu-24.04') }}
+          - os: ${{ case(github.repository_owner == 'wpilibsuite', 'blacksmith-4vcpu-ubuntu-2404', vars.RUNS_ON_CMAKE_LINUX || 'ubuntu-24.04') }}
             name: Linux
             container: wpilib/systemcore-cross-debian:trixie
             flags: "--preset with-sccache -DCMAKE_BUILD_TYPE=Release -DWPILIB_WITH_EXAMPLES=ON"
