@@ -19,3 +19,6 @@ common:macos --host_macos_minimum_os=15
 common:macos --macos_minimum_os=15
 
 common:macos --force_pic
+
+common:macos --host_platform=//shared/bazel:osx
+common:macos --platforms=//shared/bazel:osx

@@ -70,6 +70,10 @@ platform(
 
 platform(
     name = "osx",
+    exec_properties = {
+        "Arch": "arm64",
+        "OSFamily": "macos",
+    },
     flags = [
     ],
     parents = [
