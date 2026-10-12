@@ -44,22 +44,6 @@ wpilib_cc_static_library(
     ],
 )
 
-cc_library(
-    name = "wpigui_for_tests",
-    testonly = True,
-    srcs = glob(["src/main/native/cpp/**/*.cpp"]),
-    tags = [
-        "wpi-cpp-gui",
-    ],
-    target_compatible_with = imgui_test_target_compatible_with(),
-    visibility = ["//visibility:public"],
-    deps = [
-        ":headers",
-        "//shared/bazel/thirdparty/libsdlgpu",
-        "//thirdparty/imgui_suite",
-    ],
-)
-
 package_static_cc_project(
     name = "wpigui",
     architectures = host_architectures,
