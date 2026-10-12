@@ -57,7 +57,7 @@ cc_library(
     target_compatible_with = imgui_test_target_compatible_with(),
     deps = [
         "//datalog",
-        "//glass:glass_for_tests",
+        "//glass",
         "//wpigui:wpigui_test_runner",
         "//wpinet",
     ],

@@ -45,22 +45,6 @@ wpilib_cc_static_library(
 )
 
 cc_library(
-    name = "wpigui_for_tests",
-    testonly = True,
-    srcs = glob(["src/main/native/cpp/**/*.cpp"]),
-    tags = [
-        "wpi-cpp-gui",
-    ],
-    target_compatible_with = imgui_test_target_compatible_with(),
-    visibility = ["//visibility:public"],
-    deps = [
-        ":headers",
-        "//shared/bazel/thirdparty/libsdlgpu",
-        "//thirdparty/imgui_suite",
-    ],
-)
-
-cc_library(
     name = "wpigui_test_runner",
     testonly = True,
     srcs = ["src/test/native/cpp/GuiTestEngineRunner.cpp"],
@@ -69,7 +53,7 @@ cc_library(
     target_compatible_with = imgui_test_target_compatible_with(),
     visibility = ["//visibility:public"],
     deps = [
-        ":wpigui_for_tests",
+        ":wpigui",
         "//shared/bazel/thirdparty/imgui_test_engine",
     ],
 )
