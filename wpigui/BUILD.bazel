@@ -54,7 +54,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":wpigui",
-        "//shared/bazel/thirdparty/imgui_test_engine",
+        "//thirdparty/imgui_suite/imgui_test_engine",
     ],
 )
 
