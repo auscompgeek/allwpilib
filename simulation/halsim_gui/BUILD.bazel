@@ -108,13 +108,17 @@ wpilib_imgui_cc_test(
     name = "halsim_gui-imgui-test",
     size = "small",
     srcs = glob([
+        "src/main/native/cpp/*",
+        "src/main/native/include/**/*.hpp",
         "src/test/native/imgui/**",
     ]),
+    includes = ["src/main/native/include"],
     tags = [
         "no-asan",
     ],
     deps = [
-        ":halsim_gui_static",
+        "//glass:glassnt",
+        "//hal:wpiHal",
     ],
 )
 
