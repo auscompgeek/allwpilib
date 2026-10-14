@@ -83,9 +83,8 @@ inline_code: |
       }
     })
     .def("__repr__", [](const Translation3d& self) {
-      return "Translation3d(x=" + std::to_string(self.X()()) + ", "
-                            "y=" + std::to_string(self.Y()()) + ", "
-                            "z=" + std::to_string(self.Z()()) + ")";
+      return py::str("Translation3d(x={}, y={}, z={})")
+        .format(self.X()(), self.Y()(), self.Z()());
     });
 
   SetupWPyStruct<wpi::math::Translation3d>(cls_Translation3d);

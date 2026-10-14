@@ -51,7 +51,7 @@ inline_code: |
       return std::make_unique<Rotation2d>(value);
     })
     .def("__repr__", [](const Rotation2d& self) {
-      return "Rotation2d(" + std::to_string(self.Radians()()) + ")";
+      return py::str("Rotation2d({})").format(self.Radians()());
     });
 
   SetupWPyStruct<wpi::math::Rotation2d>(cls_Rotation2d);

@@ -77,8 +77,8 @@ inline_code: |
       }
     })
     .def("__repr__", [](const Translation2d& self) {
-      return "Translation2d(x=" + std::to_string(self.X()()) + ", "
-                            "y=" + std::to_string(self.Y()()) + ")";
+      return py::str("Translation2d(x={}, y={})")
+        .format(self.X()(), self.Y()());
     });
 
   SetupWPyStruct<wpi::math::Translation2d>(cls_Translation2d);

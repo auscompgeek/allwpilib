@@ -45,10 +45,8 @@ classes:
 inline_code: |
   cls_Quaternion
     .def("__repr__", [](const Quaternion& self) {
-      return "Quaternion(w=" + std::to_string(self.W()) +
-             ",x=" + std::to_string(self.X()) +
-             ", y=" + std::to_string(self.Y()) +
-             ", z=" + std::to_string(self.Z()) + ")";
+      return py::str("Quaternion(w={},x={}, y={}, z={})")
+        .format(self.W(), self.X(), self.Y(), self.Z());
     })
     .def_property_readonly("w", &Quaternion::W)
     .def_property_readonly("x", &Quaternion::X)

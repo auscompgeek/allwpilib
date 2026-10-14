@@ -74,9 +74,8 @@ inline_code: |
       return self->Angle();
     })
     .def("__repr__", [](const Rotation3d& self) {
-      return "Rotation3d(x=" + std::to_string(self.X()()) + ", "
-                         "y=" + std::to_string(self.Y()()) + ", "
-                         "z=" + std::to_string(self.Z()()) + ")";
+      return py::str("Rotation3d(x={}, y={}, z={})")
+        .format(self.X()(), self.Y()(), self.Z()());
     });
 
   SetupWPyStruct<wpi::math::Rotation3d>(cls_Rotation3d);
