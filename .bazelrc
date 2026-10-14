@@ -9,6 +9,8 @@ build --experimental_cc_static_library
 build --experimental_cc_shared_library
 build --incompatible_strict_action_env
 
+build --experimental_unsupported_and_brittle_include_scanning
+
 # Actions get a fixed environment from the flag above, but repository rules and
 # module extensions still see the client environment in full, and that is where
 # the C++ toolchain gets configured -- rules_cc declares roughly thirty
