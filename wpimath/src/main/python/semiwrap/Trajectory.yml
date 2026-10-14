@@ -1,5 +1,4 @@
 extra_includes:
-- geometryToString.h
 - wpi/math/trajectory/DifferentialSample.hpp
 - wpi/math/trajectory/DrivetrainSplineSample.hpp
 

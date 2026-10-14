@@ -1,5 +1,4 @@
 extra_includes:
-- geometryToString.h
 - wpystruct.h
 - pybind11/eigen.h
 
@@ -77,6 +76,9 @@ inline_code: |
           throw std::out_of_range("Translation2d index out of range");
       }
     })
-    .def("__repr__", py::overload_cast<const Translation2d&>(&rpy::toString));
+    .def("__repr__", [](const Translation2d& self) {
+      return "Translation2d(x=" + std::to_string(self.X()()) + ", "
+                            "y=" + std::to_string(self.Y()()) + ")";
+    });
 
   SetupWPyStruct<wpi::math::Translation2d>(cls_Translation2d);

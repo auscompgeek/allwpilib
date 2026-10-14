@@ -1,5 +1,4 @@
 extra_includes:
-- geometryToString.h
 - wpystruct.h
 
 classes:
@@ -45,6 +44,9 @@ inline_code: |
     .def_property_readonly("z_feet", [](const Transform3d * self) -> wpi::units::foot_t {
       return self->Z();
     })
-    .def("__repr__", py::overload_cast<const Transform3d&>(&rpy::toString));
+    .def("__repr__", [](const Transform3d& self) {
+      return py::str("Transform3d({!r}, {!r})")
+        .format(self.Translation(), self.Rotation());
+    });
 
   SetupWPyStruct<wpi::math::Transform3d>(cls_Transform3d);

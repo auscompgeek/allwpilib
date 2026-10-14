@@ -1,5 +1,4 @@
 extra_includes:
-- geometryToString.h
 - wpystruct.h
 
 functions:
@@ -74,6 +73,10 @@ inline_code: |
     .def_property_readonly("angle_degrees", [](const Rotation3d * self) -> wpi::units::degree_t {
       return self->Angle();
     })
-    .def("__repr__", py::overload_cast<const Rotation3d&>(&rpy::toString));
+    .def("__repr__", [](const Rotation3d& self) {
+      return "Rotation3d(x=" + std::to_string(self.X()()) + ", "
+                         "y=" + std::to_string(self.Y()()) + ", "
+                         "z=" + std::to_string(self.Z()()) + ")";
+    });
 
   SetupWPyStruct<wpi::math::Rotation3d>(cls_Rotation3d);

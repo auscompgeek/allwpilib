@@ -1,5 +1,4 @@
 extra_includes:
-- geometryToString.h
 - wpystruct.h
 - pybind11/eigen.h
 - units_numpy_type_caster.h
@@ -83,6 +82,10 @@ inline_code: |
           throw std::out_of_range("Translation3d index out of range");
       }
     })
-    .def("__repr__", py::overload_cast<const Translation3d&>(&rpy::toString));
+    .def("__repr__", [](const Translation3d& self) {
+      return "Translation3d(x=" + std::to_string(self.X()()) + ", "
+                            "y=" + std::to_string(self.Y()()) + ", "
+                            "z=" + std::to_string(self.Z()()) + ")";
+    });
 
   SetupWPyStruct<wpi::math::Translation3d>(cls_Translation3d);

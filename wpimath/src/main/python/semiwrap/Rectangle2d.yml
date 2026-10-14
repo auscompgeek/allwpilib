@@ -1,5 +1,4 @@
 extra_includes:
-- geometryToString.h
 - wpystruct.h
 
 classes:
@@ -39,7 +38,10 @@ inline_code: |-
     .def_property_readonly("y_width_feet", [](Rectangle2d &self) -> wpi::units::foot_t {
       return self.YWidth();
     })
-    .def("__repr__", py::overload_cast<const Rectangle2d&>(&rpy::toString));
+    .def("__repr__", [](const Rectangle2d& self) {
+      return py::str("Rectangle2d(center={!r}, x_width={}, y_width={})")
+        .format(self.Center(), self.XWidth()(), self.YWidth()());
+    });
 
 
   SetupWPyStruct<wpi::math::Rectangle2d>(cls_Rectangle2d);

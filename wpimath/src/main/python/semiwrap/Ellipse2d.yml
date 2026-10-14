@@ -1,5 +1,4 @@
 extra_includes:
-- geometryToString.h
 - wpystruct.h
 
 classes:
@@ -40,7 +39,10 @@ inline_code: |-
     .def_property_readonly("y_semi_axis_feet", [](Ellipse2d &self) -> wpi::units::foot_t {
       return self.YSemiAxis();
     })
-    .def("__repr__", py::overload_cast<const Ellipse2d&>(&rpy::toString));
+    .def("__repr__", [](const Ellipse2d& self) {
+      return py::str("Ellipse2d(center={!r}, x_semi_axis={}, y_semi_axis={})")
+        .format(self.Center(), self.XSemiAxis()(), self.YSemiAxis()());
+    });
 
 
   SetupWPyStruct<wpi::math::Ellipse2d>(cls_Ellipse2d);

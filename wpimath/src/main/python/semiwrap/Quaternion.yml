@@ -1,5 +1,4 @@
 extra_includes:
-- geometryToString.h
 - wpystruct.h
 
 functions:
@@ -45,7 +44,12 @@ classes:
 
 inline_code: |
   cls_Quaternion
-    .def("__repr__", py::overload_cast<const Quaternion&>(&rpy::toString))
+    .def("__repr__", [](const Quaternion& self) {
+      return "Quaternion(w=" + std::to_string(self.W()) +
+             ",x=" + std::to_string(self.X()) +
+             ", y=" + std::to_string(self.Y()) +
+             ", z=" + std::to_string(self.Z()) + ")";
+    })
     .def_property_readonly("w", &Quaternion::W)
     .def_property_readonly("x", &Quaternion::X)
     .def_property_readonly("y", &Quaternion::Y)

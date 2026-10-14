@@ -1,5 +1,4 @@
 extra_includes:
-- geometryToString.h
 - wpystruct.h
 
 functions:
@@ -51,6 +50,8 @@ inline_code: |
     .def_static("from_rotations", [](wpi::units::turn_t value) {
       return std::make_unique<Rotation2d>(value);
     })
-    .def("__repr__", py::overload_cast<const Rotation2d&>(&rpy::toString));
+    .def("__repr__", [](const Rotation2d& self) {
+      return "Rotation2d(" + std::to_string(self.Radians()()) + ")";
+    });
 
   SetupWPyStruct<wpi::math::Rotation2d>(cls_Rotation2d);

@@ -95,7 +95,6 @@ scan_headers_ignore = [
 
     "wpi/math/util/MathShared.hpp",
 
-    "geometryToString.h",
     "PyTrajectoryConstraint.h",
     "_units_base_type_caster.h",
 ]

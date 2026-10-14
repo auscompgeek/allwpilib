@@ -1,5 +1,4 @@
 extra_includes:
-- geometryToString.h
 - wpystruct.h
 
 functions:
@@ -61,6 +60,9 @@ inline_code: |
     .def_property_readonly("y_feet", [](Pose2d * self) -> wpi::units::foot_t {
       return self->Y();
     })
-    .def("__repr__", py::overload_cast<const Pose2d&>(&rpy::toString));
+    .def("__repr__", [](const Pose2d& self) {
+      return py::str("Pose2d({!r}, {!r})")
+        .format(self.Translation(), self.Rotation());
+    });
 
   SetupWPyStruct<wpi::math::Pose2d>(cls_Pose2d);

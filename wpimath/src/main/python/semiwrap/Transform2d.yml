@@ -1,6 +1,5 @@
 extra_includes:
 - wpi/math/geometry/Pose2d.hpp
-- geometryToString.h
 - wpystruct.h
 
 classes:
@@ -48,7 +47,10 @@ inline_code: |
     .def_property_readonly("y_feet", [](Transform2d * self) -> wpi::units::foot_t {
       return self->Y();
     })
-    .def("__repr__", py::overload_cast<const Transform2d&>(&rpy::toString));
+    .def("__repr__", [](const Transform2d& self) {
+      return py::str("Transform2d({!r}, {!r})")
+        .format(self.Translation(), self.Rotation());
+    });
   ;
 
   SetupWPyStruct<wpi::math::Transform2d>(cls_Transform2d);
