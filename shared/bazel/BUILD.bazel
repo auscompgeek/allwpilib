@@ -58,7 +58,6 @@ platform(
     exec_properties = {
         "OSFamily": "Linux",
         "container-image": "docker://wpilib/debian-base:trixie@sha256:4c20e850c88d9766a3aeaaf12901c9ca5e511b6ce59930046c187ce576fa1eeb",
-        "dockerAddCapabilities": "SYS_PTRACE",
         "dockerReuse": "True",
     },
     flags = [
