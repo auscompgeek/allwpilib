@@ -2,6 +2,7 @@
 # Open Source Software; you can modify and/or share it under the terms of
 # the WPILib BSD license file in the root directory of this project.
 import argparse
+import shutil
 import subprocess
 import sys
 from collections.abc import Sequence
@@ -51,6 +52,11 @@ def make_arg_parser(
         parser.add_argument(
             "--quickbuf_plugin",
             help="Optional if you use protoc-quickbuf as protoc. Path to the quickbuf protoc plugin.",
+        )
+        parser.add_argument(
+            "--quickbuf_directory",
+            help="Optional. Directory of QuickBuffers Java files already generated (e.g. by Bazel). If set, these are copied instead of running protoc.",
+            type=Path,
         )
     if GeneratorTypes.NANOPB in types:
         parser.add_argument(
@@ -103,7 +109,11 @@ def write_file(output_dir: Path, outfn: str, contents: str) -> None:
 
 
 def generate_quickbuf(
-    protoc: Path, quickbuf_plugin: Path | None, output_directory: Path, proto_dir: Path
+    protoc: Path,
+    quickbuf_plugin: Path | None,
+    output_directory: Path,
+    proto_dir: Path,
+    quickbuf_directory: Path | None = None,
 ) -> None:
     """Generates QuickBuffers files.
 
@@ -112,13 +122,22 @@ def generate_quickbuf(
     quickbuf_plugin -- The QuickBuffers protoc plugin, or None if using protoc-quickbuf.
     output_directory -- The base output directory to write generated files to.
     proto_dir -- The base directory with protobuf files.
+    quickbuf_directory -- Optional directory of already generated files to copy instead of running protoc.
     """
     # Wipe away all protobuf files (and only protobuf files) first to ensure correctness
     for file in output_directory.glob("**/Protobuf*.java"):
         file.unlink()
     # Nice to have if you delete the whole generated directory
     output_directory.mkdir(parents=True, exist_ok=True)
-    for path in proto_dir.glob("**/*.proto"):
+    if quickbuf_directory:
+        # copyfile rather than copy2 so Bazel's read-only permissions aren't carried over
+        shutil.copytree(
+            quickbuf_directory,
+            output_directory,
+            copy_function=shutil.copyfile,
+            dirs_exist_ok=True,
+        )
+    for path in [] if quickbuf_directory else proto_dir.glob("**/*.proto"):
         args = [str(protoc)]
         if quickbuf_plugin:
             # Optional if using protoc-quickbuf

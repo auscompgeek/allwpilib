@@ -26,3 +26,5 @@ Once your Python script is complete, you can run `python generate_<thing>.py` to
 
 #### (Re)Generating QuickBuffers files
 Regenerating QuickBuffers files requires the Protocol Buffers compiler (protoc), and the QuickBuffers plugin, which can be found on [their releases page](https://github.com/HebiRobotics/QuickBuffers/releases). Once you have both, you can pass their paths into the generation scripts with `--protoc` and `--quickbuf_plugin` and regenerate the files.
+
+With Bazel, no manual setup is needed: `bazel run //wpimath:write_wpimath` (or `//commandsv3:write_commandsv3`, or `//:write_all`) uses the `@protobuf` protoc and the QuickBuffers plugin via the `//shared/bazel/rules:quickbuf.bzl` rule, which runs protoc on a `proto_library`.

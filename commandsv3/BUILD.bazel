@@ -1,8 +1,10 @@
 load("@allwpilib_pip_deps//:requirements.bzl", "requirement")
 load("@bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@protobuf//bazel:proto_library.bzl", "proto_library")
 load("@rules_python//python:defs.bzl", "py_binary")
 load("//commandsv3:generate.bzl", "generate_commandsv3")
 load("//shared/bazel/rules:java_rules.bzl", "patch_module", "wpilib_java_library")
+load("//shared/bazel/rules:quickbuf.bzl", "quickbuf_srcs")
 
 filegroup(
     name = "test-resources",
@@ -31,6 +33,18 @@ filegroup(
     ]) + [
         "//wpilibj:hid_schema",
     ],
+)
+
+proto_library(
+    name = "commandsv3_proto",
+    srcs = glob(["src/main/proto/**/*.proto"]),
+    strip_import_prefix = "src/main/proto",
+)
+
+quickbuf_srcs(
+    name = "commandsv3_quickbuf_srcs",
+    proto = ":commandsv3_proto",
+    tags = ["pregeneration"],
 )
 
 generate_commandsv3(

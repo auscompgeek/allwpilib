@@ -177,6 +177,7 @@ def main():
         args.quickbuf_plugin,
         args.output_directory / "main/java",
         args.proto_directory,
+        args.quickbuf_directory,
     )
 
 

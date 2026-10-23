@@ -37,7 +37,6 @@ cc_test(
     srcs = ["cpp/MulticastTest.cpp"],
     tags = [
         "no-asan",
-        "no-remote-exec",  # requires avahi-daemon
     ],
     deps = [
         ":main",
