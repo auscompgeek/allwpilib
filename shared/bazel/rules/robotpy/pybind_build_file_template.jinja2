@@ -1,6 +1,6 @@
 # THIS FILE IS AUTO GENERATED
 {% if has_external_python_deps %}
-load("@allwpilib_pip_deps//:requirements.bzl", "requirement")
+load("@wpilib_pypi//:requirements.bzl", "requirement")
 {%- endif %}
 {%- if publish_casters_targets %}
 load("@rules_cc//cc:cc_library.bzl", "cc_library")

@@ -22,7 +22,7 @@ py_binary(
 
 py_console_script_binary(
     name = "robotpy",
-    pkg = "@allwpilib_pip_deps//robotpy_cli",
+    pkg = "@wpilib_pypi//robotpy_cli",
     visibility = [
         "//developerRobot:__subpackages__",
         "//robotpyExamples:__subpackages__",

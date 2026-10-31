@@ -1,4 +1,4 @@
-load("@allwpilib_pip_deps//:requirements.bzl", "requirement")
+load("@wpilib_pypi//:requirements.bzl", "requirement")
 load("//shared/bazel/rules/robotpy:build_info_gen.bzl", "generate_robotpy_pybind_build_info")
 load("//shared/bazel/rules/robotpy:pytest_util.bzl", "robotpy_py_test")
 load(":robotpy_pybind_test_info.bzl", "wpimath_test_extension", define_test_pybind_library = "define_pybind_library")
