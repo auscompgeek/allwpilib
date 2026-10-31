@@ -1,7 +1,7 @@
-load("@allwpilib_pip_deps//:requirements.bzl", "requirement", "whl_requirement")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 load("@rules_python//python:pip.bzl", "whl_filegroup")
+load("@wpilib_pypi//:requirements.bzl", "requirement", "whl_requirement")
 
 exports_files([
     "wrapper.py",

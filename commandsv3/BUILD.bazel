@@ -1,6 +1,6 @@
-load("@allwpilib_pip_deps//:requirements.bzl", "requirement")
 load("@bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@rules_python//python:defs.bzl", "py_binary")
+load("@wpilib_pypi//:requirements.bzl", "requirement")
 load("//commandsv3:generate.bzl", "generate_commandsv3")
 load("//shared/bazel/rules:java_rules.bzl", "patch_module", "wpilib_java_library")
 
