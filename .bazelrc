@@ -3,6 +3,8 @@ try-import %workspace%/user.bazelrc
 # Required for rules_python@2. Requires Windows developer mode to be enabled.
 startup --windows_enable_symlinks
 build --enable_runfiles
+# rules_python bzlmod names are too long on Windows.
+build:windows --@rules_python//python/config_settings:venvs_site_packages=yes
 
 common --enable_bzlmod
 # Resolves to --config=linux on Linux, --config=macos on Mac, --windows on windows
