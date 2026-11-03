@@ -54,13 +54,14 @@ use_repo(
 )
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.default(unified_hub_requirements_bzl = True)
 pip.parse(
     hub_name = "wpilib_pypi",
     python_version = "3.13",
     requirements_lock = "//:requirements_lock.txt",
     requirements_windows = "//:requirements_windows_lock.txt",
 )
-use_repo(pip, "wpilib_pypi")
+use_repo(pip, "pypi")
 
 bazel_dep(name = "rules_jvm_external", version = "6.8")
 

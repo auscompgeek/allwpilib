@@ -1,6 +1,6 @@
 load("@bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@pypi//:requirements.bzl", "requirement")
 load("@rules_python//python:defs.bzl", "py_test")
-load("@wpilib_pypi//:requirements.bzl", "requirement")
 load("//shared/bazel/rules/robotpy:compatibility_select.bzl", "robotpy_compatibility_select")
 
 def __update_yaml_files_impl(ctx):

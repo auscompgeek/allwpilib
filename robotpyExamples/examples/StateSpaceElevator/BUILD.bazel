@@ -1,4 +1,4 @@
-load("@wpilib_pypi//:requirements.bzl", "requirement")
+load("@pypi//:requirements.bzl", "requirement")
 load("//robotpyExamples:project.bzl", "robotpy_project")
 
 robotpy_project(
