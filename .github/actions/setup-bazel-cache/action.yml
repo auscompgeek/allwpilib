@@ -11,6 +11,8 @@ inputs:
     default: 'gitlib-bazel.wpi.edu'
   buildbuddy_token:
     description: 'BuildBuddy API token'
+  buildbuddy_if_os_match:
+    description: 'Use BuildBuddy only if OS matches this regex (defaults to using BuildBuddy)'
 
 runs:
   using: "composite"
@@ -21,13 +23,15 @@ runs:
         CACHE_PASS: ${{ inputs.bazel_remote_password }}
         REMOTE_URL: ${{ inputs.bazel_remote_url }}
         BB_TOKEN: ${{ inputs.buildbuddy_token }}
+        OS: ${{ runner.os }}
+        BB_IF_OS_MATCH: ${{ inputs.buildbuddy_if_os_match }}
       shell: bash
       run: |
-        if [ -n "${CACHE_USER}" ] && [ -n "${CACHE_PASS}" ]; then
+        if [[ -n "${CACHE_USER}" && -n "${CACHE_PASS}" ]]; then
           echo "WPI bazel-remote credentials detected; configuring R/W access"
           echo "build:remote_cache --remote_cache=grpcs://${CACHE_USER}:${CACHE_PASS}@${REMOTE_URL}" > bazel_auth.rc
           echo "build:ci --config=remote_cache" >> bazel_auth.rc
-        elif [ -n "${BB_TOKEN}" ]; then
+        elif [[ -n "${BB_TOKEN}" && "${OS}" =~ ${BB_IF_OS_MATCH} ]]; then
           echo "BuildBuddy token detected; configuring BuildBuddy cache"
           echo "build:build_buddy --remote_header=x-buildbuddy-api-key=${BB_TOKEN}" > bazel_auth.rc
           echo "build:ci --config=build_buddy" >> bazel_auth.rc
