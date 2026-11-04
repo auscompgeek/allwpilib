@@ -126,6 +126,7 @@ jobs:
           bazel_remote_username: ${{ secrets.BAZEL_CACHE_USERNAME }}
           bazel_remote_password: ${{ secrets.BAZEL_CACHE_PASSWORD }}
           buildbuddy_token: ${{ secrets.BUILDBUDDY_API_KEY }}
+          buildbuddy_if_os_match: ${{ vars.BUILDBUDDY_IF_OS_MATCH }}
 
       - name: Setup avahi-daemon
         if: runner.os == 'Linux'
