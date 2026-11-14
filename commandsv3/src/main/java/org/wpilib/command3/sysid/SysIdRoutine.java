@@ -203,9 +203,15 @@ public class SysIdRoutine extends SysIdRoutineLog {
   /** Motor direction for a SysId test. */
   public enum Direction {
     /** Forward. */
-    FORWARD,
+    FORWARD(1.0),
     /** Reverse. */
-    REVERSE
+    REVERSE(-1.0);
+
+    final double sign;
+
+    Direction(double sign) {
+      this.sign = sign;
+    }
   }
 
   /**
@@ -219,11 +225,7 @@ public class SysIdRoutine extends SysIdRoutineLog {
    * @return A command to run the test.
    */
   public Command quasistatic(Direction direction) {
-    double outputSign =
-        switch (direction) {
-          case FORWARD -> 1.0;
-          case REVERSE -> -1.0;
-        };
+    double outputSign = direction.sign;
     State state =
         switch (direction) {
           case FORWARD -> State.QUASISTATIC_FORWARD;
@@ -258,11 +260,7 @@ public class SysIdRoutine extends SysIdRoutineLog {
    * @return A command to run the test.
    */
   public Command dynamic(Direction direction) {
-    double outputSign =
-        switch (direction) {
-          case FORWARD -> 1.0;
-          case REVERSE -> -1.0;
-        };
+    double outputSign = direction.sign;
     State state =
         switch (direction) {
           case FORWARD -> State.DYNAMIC_FORWARD;

@@ -2,6 +2,7 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 from enum import Enum
+from typing import assert_never
 
 from wpilib import Timer
 from wpilib.sysid import State, SysIdRoutineLog
@@ -111,15 +112,18 @@ class SysIdRoutine(SysIdRoutineLog):
 
         :returns: A command to run the test.
         """
-
+        match direction:
+            case self.Direction.FORWARD:
+                state = State.QUASISTATIC_FORWARD
+            case self.Direction.REVERSE:
+                state = State.QUASISTATIC_REVERSE
+            case _:
+                assert_never(direction)
+        output_sign = direction.value
         timer = Timer()
-        if direction == self.Direction.FORWARD:
-            state = State.QUASISTATIC_FORWARD
-        else:
-            state = State.QUASISTATIC_REVERSE
 
         def execute():
-            self.output_volts = direction.value * timer.get() * self.config.ramp_rate
+            self.output_volts = output_sign * timer.get() * self.config.ramp_rate
             self.mechanism.drive(self.output_volts)
             self.mechanism.log(self)
             self.log_state(state)
@@ -148,13 +152,15 @@ class SysIdRoutine(SysIdRoutineLog):
 
         :returns: A command to run the test.
         """
+        match direction:
+            case self.Direction.FORWARD:
+                state = State.DYNAMIC_FORWARD
+            case self.Direction.REVERSE:
+                state = State.DYNAMIC_REVERSE
+            case _:
+                assert_never(direction)
 
-        if direction == self.Direction.FORWARD:
-            state = State.DYNAMIC_FORWARD
-        else:
-            state = State.DYNAMIC_REVERSE
-
-        def command():
+        def init():
             self.output_volts = direction.value * self.config.step_voltage
 
         def execute():
@@ -167,7 +173,7 @@ class SysIdRoutine(SysIdRoutineLog):
             self.log_state(State.NONE)
 
         return (
-            self.mechanism.subsystem.run_once(command)
+            self.mechanism.subsystem.run_once(init)
             .and_then(self.mechanism.subsystem.run(execute))
             .finally_do(end)
             .with_name(f"sysid-{state}-{self.mechanism.name}")

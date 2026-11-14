@@ -4,12 +4,10 @@
 
 package org.wpilib.command2.sysid;
 
-import static java.util.Map.entry;
 import static org.wpilib.units.Units.Second;
 import static org.wpilib.units.Units.Seconds;
 import static org.wpilib.units.Units.Volts;
 
-import java.util.Map;
 import java.util.function.Consumer;
 import org.wpilib.command2.Command;
 import org.wpilib.command2.Subsystem;
@@ -190,9 +188,15 @@ public class SysIdRoutine extends SysIdRoutineLog {
   /** Motor direction for a SysId test. */
   public enum Direction {
     /** Forward. */
-    FORWARD,
+    FORWARD(1.0),
     /** Reverse. */
-    REVERSE
+    REVERSE(-1.0);
+
+    final double sign;
+
+    Direction(double sign) {
+      this.sign = sign;
+    }
   }
 
   /**
@@ -206,14 +210,12 @@ public class SysIdRoutine extends SysIdRoutineLog {
    * @return A command to run the test.
    */
   public Command quasistatic(Direction direction) {
-    State state;
-    if (direction == Direction.FORWARD) {
-      state = State.QUASISTATIC_FORWARD;
-    } else { // if (direction == Direction.REVERSE) {
-      state = State.QUASISTATIC_REVERSE;
-    }
-
-    double outputSign = direction == Direction.FORWARD ? 1.0 : -1.0;
+    State state =
+        switch (direction) {
+          case FORWARD -> State.QUASISTATIC_FORWARD;
+          case REVERSE -> State.QUASISTATIC_REVERSE;
+        };
+    double outputSign = direction.sign;
 
     Timer timer = new Timer();
     return m_mechanism
@@ -248,12 +250,12 @@ public class SysIdRoutine extends SysIdRoutineLog {
    * @return A command to run the test.
    */
   public Command dynamic(Direction direction) {
-    double outputSign = direction == Direction.FORWARD ? 1.0 : -1.0;
+    double outputSign = direction.sign;
     State state =
-        Map.ofEntries(
-                entry(Direction.FORWARD, State.DYNAMIC_FORWARD),
-                entry(Direction.REVERSE, State.DYNAMIC_REVERSE))
-            .get(direction);
+        switch (direction) {
+          case FORWARD -> State.DYNAMIC_FORWARD;
+          case REVERSE -> State.DYNAMIC_REVERSE;
+        };
     Voltage[] output = {Volts.zero()};
 
     return m_mechanism
